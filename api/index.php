@@ -1,5 +1,6 @@
 <?php
-
+echo 10;
+/*
 $db_file = __DIR__ . '/database/database.db';
 
 
@@ -140,5 +141,5 @@ function deleteUser() {
         echo json_encode(['error' => 'ID não fornecido']);
     }
 }
-
+*/
 ?>
