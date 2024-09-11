@@ -1,5 +1,6 @@
 <?php
-$db_file = __DIR__ . '/database/database.db';
+$db_file = '/tmp/database.db';
+
 if (!file_exists($db_file)) {
     $db = new SQLite3($db_file);
     $db->exec("CREATE TABLE users (
@@ -11,6 +12,7 @@ if (!file_exists($db_file)) {
 } else {
     $db = new SQLite3($db_file);
 }
+
 $table_check = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='users'");
 if (!$table_check->fetchArray()) {
     $db->exec("CREATE TABLE users (
@@ -20,8 +22,10 @@ if (!$table_check->fetchArray()) {
         age INTEGER NOT NULL
     )");
 }
+
 header('Content-Type: application/json');
 $request_method = $_SERVER['REQUEST_METHOD'];
+
 switch ($request_method) {
     case 'GET':
         getUsers();
@@ -39,6 +43,7 @@ switch ($request_method) {
         echo json_encode(['error' => 'Método não suportado']);
         break;
 }
+
 function createUser() {
     global $db;
     $input = json_decode(file_get_contents('php://input'), true);
@@ -61,6 +66,7 @@ function createUser() {
         echo json_encode(['error' => 'Dados incompletos']);
     }
 }
+
 function getUsers() {
     global $db;
     $result = $db->query('SELECT * FROM users');
@@ -70,6 +76,7 @@ function getUsers() {
     }
     echo json_encode($users);
 }
+
 function updateUser() {
     global $db;
     parse_str(file_get_contents('php://input'), $input);
@@ -93,6 +100,7 @@ function updateUser() {
         echo json_encode(['error' => 'Dados incompletos']);
     }
 }
+
 function deleteUser() {
     global $db;
     parse_str(file_get_contents('php://input'), $input);
@@ -113,5 +121,4 @@ function deleteUser() {
         echo json_encode(['error' => 'ID não fornecido']);
     }
 }
-
 ?>
