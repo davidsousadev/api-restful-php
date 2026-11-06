@@ -50,7 +50,7 @@ Lista todos os usuários cadastrados.
 
 ```json
 [
-  { "id": 1, "name": "João Silva", "email": "joao@example.com" }
+  { "id": 1, "nome": "João Silva", "email": "joao@example.com" }
 ]
 ```
 
@@ -62,7 +62,7 @@ Cria um novo usuário. Corpo em `application/json`.
 
 ```json
 {
-  "name": "João Silva",
+  "nome": "João Silva",
   "email": "joao@example.com"
 }
 ```
@@ -82,7 +82,7 @@ Atualiza um usuário existente. Corpo em `application/x-www-form-urlencoded`.
 **Body:**
 
 ```
-id=1&name=João Silva&email=joao@example.com
+id=1&nome=João Silva&email=joao@example.com
 ```
 
 **Resposta (200):**
@@ -136,11 +136,11 @@ curl http://127.0.0.1:8000/usuarios
 # Criar usuário
 curl -X POST http://127.0.0.1:8000/usuarios \
   -H "Content-Type: application/json" \
-  -d '{"name":"João Silva","email":"joao@example.com"}'
+  -d '{"nome":"João Silva","email":"joao@example.com"}'
 
 # Atualizar usuário
 curl -X PUT http://127.0.0.1:8000/usuarios \
-  -d "id=1&name=João Silva&email=joao@example.com"
+  -d "id=1&nome=João Silva&email=joao@example.com"
 
 # Deletar usuário
 curl -X DELETE http://127.0.0.1:8000/usuarios \

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * API RESTful de gerenciamento de usuários.
  *
@@ -14,18 +15,18 @@ if (!file_exists($db_file)) {
     $db = new SQLite3($db_file);
     $db->exec("CREATE TABLE usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        nome TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE
     )");
 } else {
     $db = new SQLite3($db_file);
 }
 
-$table_check = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'");
+$table_check = $db->query("SELECT nome FROM sqlite_master WHERE type='table' AND nome='usuarios'");
 if (!$table_check->fetchArray()) {
     $db->exec("CREATE TABLE usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        nome TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE
     )");
 }
@@ -89,21 +90,22 @@ switch ($request_method) {
  * Cria um novo usuário a partir de um payload JSON.
  *
  * Espera no corpo da requisição (application/json) os campos:
- * name (string) e email (string). Retorna JSON com
+ * nome (string) e email (string). Retorna JSON com
  * sucesso ou erro.
  *
  * @return void
  */
-function createUsuario() {
+function createUsuario()
+{
     global $db;
     $input = json_decode(file_get_contents('php://input'), true);
-    if (isset($input['name'], $input['email'])) {
-        $stmt = $db->prepare('INSERT INTO usuarios (name, email) VALUES (:name, :email)');
+    if (isset($input['nome'], $input['email'])) {
+        $stmt = $db->prepare('INSERT INTO usuarios (nome, email) VALUES (:nome, :email)');
         if ($stmt === false) {
             echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
             return;
         }
-        $stmt->bindValue(':name', $input['name'], SQLITE3_TEXT);
+        $stmt->bindValue(':nome', $input['nome'], SQLITE3_TEXT);
         $stmt->bindValue(':email', $input['email'], SQLITE3_TEXT);
         $result = $stmt->execute();
         if ($result) {
@@ -121,7 +123,8 @@ function createUsuario() {
  *
  * @return void
  */
-function getUsuarios() {
+function getUsuarios()
+{
     global $db;
     $result = $db->query('SELECT * FROM usuarios');
     $usuarios = [];
@@ -135,20 +138,21 @@ function getUsuarios() {
  * Atualiza um usuário existente.
  *
  * Espera no corpo da requisição (application/x-www-form-urlencoded)
- * os campos: id (int), name (string) e email (string).
+ * os campos: id (int), nome (string) e email (string).
  *
  * @return void
  */
-function updateUsuario() {
+function updateUsuario()
+{
     global $db;
     parse_str(file_get_contents('php://input'), $input);
-    if (isset($input['id'], $input['name'], $input['email'])) {
-        $stmt = $db->prepare('UPDATE usuarios SET name = :name, email = :email WHERE id = :id');
+    if (isset($input['id'], $input['nome'], $input['email'])) {
+        $stmt = $db->prepare('UPDATE usuarios SET nome = :nome, email = :email WHERE id = :id');
         if ($stmt === false) {
             echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
             return;
         }
-        $stmt->bindValue(':name', $input['name'], SQLITE3_TEXT);
+        $stmt->bindValue(':nome', $input['nome'], SQLITE3_TEXT);
         $stmt->bindValue(':email', $input['email'], SQLITE3_TEXT);
         $stmt->bindValue(':id', $input['id'], SQLITE3_INTEGER);
         $result = $stmt->execute();
@@ -170,7 +174,8 @@ function updateUsuario() {
  *
  * @return void
  */
-function deleteUsuario() {
+function deleteUsuario()
+{
     global $db;
     parse_str(file_get_contents('php://input'), $input);
     if (isset($input['id'])) {
@@ -196,7 +201,8 @@ function deleteUsuario() {
  *
  * @return string
  */
-function renderDocsPage(): string {
+function renderDocsPage(): string
+{
     return <<<'HTML'
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -222,5 +228,3 @@ function renderDocsPage(): string {
 </html>
 HTML;
 }
-
-?>
