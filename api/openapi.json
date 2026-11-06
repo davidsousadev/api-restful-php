@@ -185,7 +185,7 @@
       "Message": {
         "type": "object",
         "properties": {
-          "success": {
+          "sucesso": {
             "type": "string",
             "example": "Usuário criado com sucesso"
           },

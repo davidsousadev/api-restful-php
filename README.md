@@ -70,7 +70,7 @@ Cria um novo usuário. Corpo em `application/json`.
 **Resposta (200):**
 
 ```json
-{ "success": "Usuário criado com sucesso" }
+{ "sucesso": "Usuário criado com sucesso" }
 ```
 
 Erros possíveis: `{ "error": "Dados incompletos" }` ou `{ "error": "Email já cadastrado" }`.
@@ -88,7 +88,7 @@ id=1&nome=João Silva&email=joao@example.com
 **Resposta (200):**
 
 ```json
-{ "success": "Usuário atualizado com sucesso" }
+{ "sucesso": "Usuário atualizado com sucesso" }
 ```
 
 Erros possíveis: `{ "error": "Dados incompletos" }` ou `{ "error": "Email já cadastrado" }`.
@@ -106,7 +106,7 @@ id=1
 **Resposta (200):**
 
 ```json
-{ "success": "Usuário deletado com sucesso" }
+{ "sucesso": "Usuário deletado com sucesso" }
 ```
 
 Erros possíveis: `{ "error": "ID não fornecido" }`.

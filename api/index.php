@@ -123,7 +123,7 @@ function createUsuario()
         $stmt->bindValue(':email', $input['email'], SQLITE3_TEXT);
         $result = @$stmt->execute();
         if ($result) {
-            echo json_encode(['success' => 'Usuário criado com sucesso']);
+            echo json_encode(['sucesso' => 'Usuário criado com sucesso']);
         } else {
             echo json_encode(['error' => 'Erro ao criar usuário']);
         }
@@ -184,7 +184,7 @@ function updateUsuario()
         $stmt->bindValue(':id', $input['id'], SQLITE3_INTEGER);
         $result = @$stmt->execute();
         if ($result) {
-            echo json_encode(['success' => 'Usuário atualizado com sucesso']);
+            echo json_encode(['sucesso' => 'Usuário atualizado com sucesso']);
         } else {
             echo json_encode(['error' => 'Erro ao atualizar usuário']);
         }
@@ -214,7 +214,7 @@ function deleteUsuario()
         $stmt->bindValue(':id', $input['id'], SQLITE3_INTEGER);
         $result = $stmt->execute();
         if ($result) {
-            echo json_encode(['success' => 'Usuário deletado com sucesso']);
+            echo json_encode(['sucesso' => 'Usuário deletado com sucesso']);
         } else {
             echo json_encode(['error' => 'Erro ao deletar usuário']);
         }
