@@ -22,7 +22,7 @@ if (!file_exists($db_file)) {
     $db = new SQLite3($db_file);
 }
 
-$table_check = $db->query("SELECT nome FROM sqlite_master WHERE type='table' AND nome='usuarios'");
+$table_check = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'");
 if (!$table_check->fetchArray()) {
     $db->exec("CREATE TABLE usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
