@@ -1,0 +1,161 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API RESTful PHP - Users",
+    "description": "API RESTful simples para gerenciamento de usuários, construída em PHP com SQLite e hospedada na Vercel.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Servidor atual"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Listar usuários",
+        "description": "Retorna a lista de todos os usuários cadastrados.",
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar usuário",
+        "description": "Cria um novo usuário. O corpo da requisição deve ser um JSON com name, email e age.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado da operação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar usuário",
+        "description": "Atualiza um usuário existente. O corpo da requisição deve ser url-encoded (application/x-www-form-urlencoded) com id, name, email e age.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado da operação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar usuário",
+        "description": "Remove um usuário pelo id. O corpo da requisição deve ser url-encoded (application/x-www-form-urlencoded) com id.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                },
+                "required": ["id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado da operação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "João Silva" },
+          "email": { "type": "string", "format": "email", "example": "joao@example.com" },
+          "age": { "type": "integer", "example": 30 }
+        }
+      },
+      "UserInput": {
+        "type": "object",
+        "required": ["name", "email", "age"],
+        "properties": {
+          "name": { "type": "string", "example": "João Silva" },
+          "email": { "type": "string", "format": "email", "example": "joao@example.com" },
+          "age": { "type": "integer", "example": 30 }
+        }
+      },
+      "UserUpdateInput": {
+        "type": "object",
+        "required": ["id", "name", "email", "age"],
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "João Silva" },
+          "email": { "type": "string", "format": "email", "example": "joao@example.com" },
+          "age": { "type": "integer", "example": 30 }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "string", "example": "Usuário criado com sucesso" },
+          "error": { "type": "string", "example": "Dados incompletos" }
+        }
+      }
+    }
+  }
+}
