@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "API RESTful PHP - Users",
+    "title": "API RESTful PHP - Usuários",
     "description": "API RESTful simples para gerenciamento de usuários, construída em PHP com SQLite e hospedada na Vercel.",
     "version": "1.0.0"
   },
@@ -34,7 +34,7 @@
       },
       "post": {
         "summary": "Criar usuário",
-        "description": "Cria um novo usuário. O corpo da requisição deve ser um JSON com name, email e age.",
+        "description": "Cria um novo usuário. O corpo da requisição deve ser um JSON com name e email.",
         "requestBody": {
           "required": true,
           "content": {
@@ -60,7 +60,7 @@
       },
       "put": {
         "summary": "Atualizar usuário",
-        "description": "Atualiza um usuário existente. O corpo da requisição deve ser url-encoded (application/x-www-form-urlencoded) com id, name, email e age.",
+        "description": "Atualiza um usuário existente. O corpo da requisição deve ser url-encoded (application/x-www-form-urlencoded) com id, name e email.",
         "requestBody": {
           "required": true,
           "content": {
@@ -126,27 +126,24 @@
         "properties": {
           "id": { "type": "integer", "example": 1 },
           "name": { "type": "string", "example": "João Silva" },
-          "email": { "type": "string", "format": "email", "example": "joao@example.com" },
-          "age": { "type": "integer", "example": 30 }
+          "email": { "type": "string", "format": "email", "example": "joao@example.com" }
         }
       },
       "UserInput": {
         "type": "object",
-        "required": ["name", "email", "age"],
+        "required": ["name", "email"],
         "properties": {
           "name": { "type": "string", "example": "João Silva" },
-          "email": { "type": "string", "format": "email", "example": "joao@example.com" },
-          "age": { "type": "integer", "example": 30 }
+          "email": { "type": "string", "format": "email", "example": "joao@example.com" }
         }
       },
       "UserUpdateInput": {
         "type": "object",
-        "required": ["id", "name", "email", "age"],
+        "required": ["id", "name", "email"],
         "properties": {
           "id": { "type": "integer", "example": 1 },
           "name": { "type": "string", "example": "João Silva" },
-          "email": { "type": "string", "format": "email", "example": "joao@example.com" },
-          "age": { "type": "integer", "example": 30 }
+          "email": { "type": "string", "format": "email", "example": "joao@example.com" }
         }
       },
       "Message": {

@@ -1,4 +1,4 @@
-# API RESTful PHP - Users
+# API RESTful PHP - Usuários
 
 API RESTful simples para gerenciamento de usuários, construída em PHP com SQLite
 e preparada para deploy na [Vercel](https://vercel.com) usando o runtime `vercel-php`.
@@ -50,7 +50,7 @@ Lista todos os usuários cadastrados.
 
 ```json
 [
-  { "id": 1, "name": "João Silva", "email": "joao@example.com", "age": 30 }
+  { "id": 1, "name": "João Silva", "email": "joao@example.com" }
 ]
 ```
 
@@ -63,8 +63,7 @@ Cria um novo usuário. Corpo em `application/json`.
 ```json
 {
   "name": "João Silva",
-  "email": "joao@example.com",
-  "age": 30
+  "email": "joao@example.com"
 }
 ```
 
@@ -83,7 +82,7 @@ Atualiza um usuário existente. Corpo em `application/x-www-form-urlencoded`.
 **Body:**
 
 ```
-id=1&name=João Silva&email=joao@example.com&age=31
+id=1&name=João Silva&email=joao@example.com
 ```
 
 **Resposta (200):**
@@ -130,11 +129,11 @@ curl http://127.0.0.1:8000/
 # Criar usuário
 curl -X POST http://127.0.0.1:8000/ \
   -H "Content-Type: application/json" \
-  -d '{"name":"João Silva","email":"joao@example.com","age":30}'
+  -d '{"name":"João Silva","email":"joao@example.com"}'
 
 # Atualizar usuário
 curl -X PUT http://127.0.0.1:8000/ \
-  -d "id=1&name=João Silva&email=joao@example.com&age=31"
+  -d "id=1&name=João Silva&email=joao@example.com"
 
 # Deletar usuário
 curl -X DELETE http://127.0.0.1:8000/ \

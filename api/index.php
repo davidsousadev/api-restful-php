@@ -3,7 +3,7 @@
  * API RESTful de gerenciamento de usuários.
  *
  * Ponto de entrada único (Vercel roteia tudo para este arquivo).
- * Expõe endpoints CRUD para a tabela `users` (SQLite) e a documentação
+ * Expõe endpoints CRUD para a tabela `usuarios` (SQLite) e a documentação
  * OpenAPI/Swagger em /openapi.json e /docs.
  *
  * @package ApiRestfulPhp
@@ -13,23 +13,21 @@ $db_file = '/tmp/database.db';
 
 if (!file_exists($db_file)) {
     $db = new SQLite3($db_file);
-    $db->exec("CREATE TABLE users (
+    $db->exec("CREATE TABLE usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        age INTEGER NOT NULL
+        email TEXT NOT NULL UNIQUE
     )");
 } else {
     $db = new SQLite3($db_file);
 }
 
-$table_check = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='users'");
+$table_check = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'");
 if (!$table_check->fetchArray()) {
-    $db->exec("CREATE TABLE users (
+    $db->exec("CREATE TABLE usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        age INTEGER NOT NULL
+        email TEXT NOT NULL UNIQUE
     )");
 }
 
@@ -52,16 +50,16 @@ if ($request_uri === '/docs' || $request_uri === '/api/docs') {
 
 switch ($request_method) {
     case 'GET':
-        getUsers();
+        getUsuarios();
         break;
     case 'POST':
-        createUser();
+        createUsuario();
         break;
     case 'PUT':
-        updateUser();
+        updateUsuario();
         break;
     case 'DELETE':
-        deleteUser();
+        deleteUsuario();
         break;
     default:
         echo json_encode(['error' => 'Método não suportado']);
@@ -72,23 +70,22 @@ switch ($request_method) {
  * Cria um novo usuário a partir de um payload JSON.
  *
  * Espera no corpo da requisição (application/json) os campos:
- * name (string), email (string) e age (int). Retorna JSON com
+ * name (string) e email (string). Retorna JSON com
  * sucesso ou erro.
  *
  * @return void
  */
-function createUser() {
+function createUsuario() {
     global $db;
     $input = json_decode(file_get_contents('php://input'), true);
-    if (isset($input['name'], $input['email'], $input['age'])) {
-        $stmt = $db->prepare('INSERT INTO users (name, email, age) VALUES (:name, :email, :age)');
+    if (isset($input['name'], $input['email'])) {
+        $stmt = $db->prepare('INSERT INTO usuarios (name, email) VALUES (:name, :email)');
         if ($stmt === false) {
             echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
             return;
         }
         $stmt->bindValue(':name', $input['name'], SQLITE3_TEXT);
         $stmt->bindValue(':email', $input['email'], SQLITE3_TEXT);
-        $stmt->bindValue(':age', $input['age'], SQLITE3_INTEGER);
         $result = $stmt->execute();
         if ($result) {
             echo json_encode(['success' => 'Usuário criado com sucesso']);
@@ -105,36 +102,35 @@ function createUser() {
  *
  * @return void
  */
-function getUsers() {
+function getUsuarios() {
     global $db;
-    $result = $db->query('SELECT * FROM users');
-    $users = [];
+    $result = $db->query('SELECT * FROM usuarios');
+    $usuarios = [];
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-        $users[] = $row;
+        $usuarios[] = $row;
     }
-    echo json_encode($users);
+    echo json_encode($usuarios);
 }
 
 /**
  * Atualiza um usuário existente.
  *
  * Espera no corpo da requisição (application/x-www-form-urlencoded)
- * os campos: id (int), name (string), email (string) e age (int).
+ * os campos: id (int), name (string) e email (string).
  *
  * @return void
  */
-function updateUser() {
+function updateUsuario() {
     global $db;
     parse_str(file_get_contents('php://input'), $input);
-    if (isset($input['id'], $input['name'], $input['email'], $input['age'])) {
-        $stmt = $db->prepare('UPDATE users SET name = :name, email = :email, age = :age WHERE id = :id');
+    if (isset($input['id'], $input['name'], $input['email'])) {
+        $stmt = $db->prepare('UPDATE usuarios SET name = :name, email = :email WHERE id = :id');
         if ($stmt === false) {
             echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
             return;
         }
         $stmt->bindValue(':name', $input['name'], SQLITE3_TEXT);
         $stmt->bindValue(':email', $input['email'], SQLITE3_TEXT);
-        $stmt->bindValue(':age', $input['age'], SQLITE3_INTEGER);
         $stmt->bindValue(':id', $input['id'], SQLITE3_INTEGER);
         $result = $stmt->execute();
         if ($result) {
@@ -155,11 +151,11 @@ function updateUser() {
  *
  * @return void
  */
-function deleteUser() {
+function deleteUsuario() {
     global $db;
     parse_str(file_get_contents('php://input'), $input);
     if (isset($input['id'])) {
-        $stmt = $db->prepare('DELETE FROM users WHERE id = :id');
+        $stmt = $db->prepare('DELETE FROM usuarios WHERE id = :id');
         if ($stmt === false) {
             echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
             return;
