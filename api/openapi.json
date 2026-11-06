@@ -12,7 +12,7 @@
     }
   ],
   "paths": {
-    "/": {
+    "/usuarios": {
       "get": {
         "summary": "Listar usuários",
         "description": "Retorna a lista de todos os usuários cadastrados.",

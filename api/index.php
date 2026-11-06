@@ -8,7 +8,6 @@
  *
  * @package ApiRestfulPhp
  */
-
 $db_file = '/tmp/database.db';
 
 if (!file_exists($db_file)) {
@@ -32,8 +31,19 @@ if (!$table_check->fetchArray()) {
 }
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: *');
+header('Access-Control-Max-Age: 86400');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
 $request_method = $_SERVER['REQUEST_METHOD'];
 $request_uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$request_uri = $request_uri === '/' ? '/' : rtrim($request_uri, '/');
 
 // Endpoints de documentação da API
 if ($request_uri === '/openapi.json' || $request_uri === '/api/openapi.json') {
@@ -45,6 +55,15 @@ if ($request_uri === '/openapi.json' || $request_uri === '/api/openapi.json') {
 if ($request_uri === '/docs' || $request_uri === '/api/docs') {
     header('Content-Type: text/html; charset=utf-8');
     echo renderDocsPage();
+    exit;
+}
+
+// Rotas válidas para o recurso de usuários (mantém compatibilidade com '/')
+$allowed_paths = ['/', '/usuarios', '/api/usuarios'];
+if (!in_array($request_uri, $allowed_paths, true)) {
+    http_response_code(404);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['error' => 'Rota não encontrada']);
     exit;
 }
 
@@ -171,6 +190,7 @@ function deleteUsuario() {
         echo json_encode(['error' => 'ID não fornecido']);
     }
 }
+
 /**
  * Renderiza a página HTML com a interface Swagger UI apontando para /openapi.json.
  *

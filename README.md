@@ -42,7 +42,7 @@ A API ficará disponível em `http://127.0.0.1:8000`.
 
 Base URL local: `http://127.0.0.1:8000`
 
-### `GET /`
+### `GET /usuarios`
 
 Lista todos os usuários cadastrados.
 
@@ -54,7 +54,7 @@ Lista todos os usuários cadastrados.
 ]
 ```
 
-### `POST /`
+### `POST /usuarios`
 
 Cria um novo usuário. Corpo em `application/json`.
 
@@ -75,7 +75,7 @@ Cria um novo usuário. Corpo em `application/json`.
 
 Erros possíveis: `{ "error": "Dados incompletos" }`.
 
-### `PUT /`
+### `PUT /usuarios`
 
 Atualiza um usuário existente. Corpo em `application/x-www-form-urlencoded`.
 
@@ -93,7 +93,7 @@ id=1&name=João Silva&email=joao@example.com
 
 Erros possíveis: `{ "error": "Dados incompletos" }`.
 
-### `DELETE /`
+### `DELETE /usuarios`
 
 Remove um usuário pelo `id`. Corpo em `application/x-www-form-urlencoded`.
 
@@ -111,7 +111,14 @@ id=1
 
 Erros possíveis: `{ "error": "ID não fornecido" }`.
 
+## CORS
+
+A API envia cabeçalhos CORS permissivos (`Access-Control-Allow-Origin: *`) e responde
+a requisições `OPTIONS` (preflight) com `204 No Content`, permitindo acesso de
+qualquer origem.
+
 ## Documentação interativa
+
 
 Com o servidor rodando, acesse:
 
@@ -124,19 +131,19 @@ Em produção (Vercel), substitua o host pela URL do deploy.
 
 ```bash
 # Listar usuários
-curl http://127.0.0.1:8000/
+curl http://127.0.0.1:8000/usuarios
 
 # Criar usuário
-curl -X POST http://127.0.0.1:8000/ \
+curl -X POST http://127.0.0.1:8000/usuarios \
   -H "Content-Type: application/json" \
   -d '{"name":"João Silva","email":"joao@example.com"}'
 
 # Atualizar usuário
-curl -X PUT http://127.0.0.1:8000/ \
+curl -X PUT http://127.0.0.1:8000/usuarios \
   -d "id=1&name=João Silva&email=joao@example.com"
 
 # Deletar usuário
-curl -X DELETE http://127.0.0.1:8000/ \
+curl -X DELETE http://127.0.0.1:8000/usuarios \
   -d "id=1"
 ```
 
