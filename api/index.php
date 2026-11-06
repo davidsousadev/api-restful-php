@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', '0');
+error_reporting(0);
 
 /**
  * API RESTful de gerenciamento de usuários.
@@ -100,6 +102,18 @@ function createUsuario()
     global $db;
     $input = json_decode(file_get_contents('php://input'), true);
     if (isset($input['nome'], $input['email'])) {
+        $check = $db->prepare('SELECT 1 FROM usuarios WHERE email = :email');
+        if ($check === false) {
+            echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
+            return;
+        }
+        $check->bindValue(':email', $input['email'], SQLITE3_TEXT);
+        $check_result = $check->execute();
+        if ($check_result && $check_result->fetchArray()) {
+            echo json_encode(['error' => 'Email já cadastrado']);
+            return;
+        }
+
         $stmt = $db->prepare('INSERT INTO usuarios (nome, email) VALUES (:nome, :email)');
         if ($stmt === false) {
             echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
@@ -107,7 +121,7 @@ function createUsuario()
         }
         $stmt->bindValue(':nome', $input['nome'], SQLITE3_TEXT);
         $stmt->bindValue(':email', $input['email'], SQLITE3_TEXT);
-        $result = $stmt->execute();
+        $result = @$stmt->execute();
         if ($result) {
             echo json_encode(['success' => 'Usuário criado com sucesso']);
         } else {
@@ -147,6 +161,19 @@ function updateUsuario()
     global $db;
     parse_str(file_get_contents('php://input'), $input);
     if (isset($input['id'], $input['nome'], $input['email'])) {
+        $check = $db->prepare('SELECT 1 FROM usuarios WHERE email = :email AND id != :id');
+        if ($check === false) {
+            echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
+            return;
+        }
+        $check->bindValue(':email', $input['email'], SQLITE3_TEXT);
+        $check->bindValue(':id', $input['id'], SQLITE3_INTEGER);
+        $check_result = $check->execute();
+        if ($check_result && $check_result->fetchArray()) {
+            echo json_encode(['error' => 'Email já cadastrado']);
+            return;
+        }
+
         $stmt = $db->prepare('UPDATE usuarios SET nome = :nome, email = :email WHERE id = :id');
         if ($stmt === false) {
             echo json_encode(['error' => 'Erro ao preparar a declaração SQL']);
@@ -155,7 +182,7 @@ function updateUsuario()
         $stmt->bindValue(':nome', $input['nome'], SQLITE3_TEXT);
         $stmt->bindValue(':email', $input['email'], SQLITE3_TEXT);
         $stmt->bindValue(':id', $input['id'], SQLITE3_INTEGER);
-        $result = $stmt->execute();
+        $result = @$stmt->execute();
         if ($result) {
             echo json_encode(['success' => 'Usuário atualizado com sucesso']);
         } else {

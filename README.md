@@ -73,7 +73,7 @@ Cria um novo usuário. Corpo em `application/json`.
 { "success": "Usuário criado com sucesso" }
 ```
 
-Erros possíveis: `{ "error": "Dados incompletos" }`.
+Erros possíveis: `{ "error": "Dados incompletos" }` ou `{ "error": "Email já cadastrado" }`.
 
 ### `PUT /usuarios`
 
@@ -91,7 +91,7 @@ id=1&nome=João Silva&email=joao@example.com
 { "success": "Usuário atualizado com sucesso" }
 ```
 
-Erros possíveis: `{ "error": "Dados incompletos" }`.
+Erros possíveis: `{ "error": "Dados incompletos" }` ou `{ "error": "Email já cadastrado" }`.
 
 ### `DELETE /usuarios`
 
